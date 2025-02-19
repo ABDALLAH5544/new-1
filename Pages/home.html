@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعد الطالب الذكي</title>
+    <link rel="icon" href="Media/icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: center;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .menu-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            cursor: pointer;
+            color: white;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: #34495e;
+            color: white;
+            padding-top: 50px;
+            transition: left 0.3s;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            font-size: 18px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background: #16a085;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .content {
+            padding: 20px;
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        .dropdown-menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            background: #2c3e50;
+            color: white;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        .dropdown-menu li a {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            width: 100%;
+            text-align: right;
+            transition: background 0.3s;
+        }
+        .dropdown-menu li a:hover {
+            background: #16a085;
+        }
+
+        #Page_home{
+
+width: 60%;
+
+
+}
+#par{
+
+    font-size: 120%;
+}
+#apar{
+
+color: #1a6838;
+}
+
+    </style>
+</head>
+<body>
+    <audio id="welcomeSound" src="Media/welcome.mp3" preload="auto"></audio>
+    <!-- القائمة الجانبية -->
+    <header>
+        <span class="menu-icon" onclick="toggleMenu()">☰</span>
+        📚 مساعد الطالب الذكي
+    </header>
+   <!-- قائمة المواد الدراسية -->
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleMenu()">×</span>
+        <div onclick="toggleDropdown('lessons-dropdown')" style="cursor: pointer; padding: 15px;">
+            📖 مواد دراسية <span style="font-size: 16px;"> ▼ </span>
+        </div>
+        <ul id="lessons-dropdown" class="dropdown-menu">
+            <li>
+                <div onclick="toggleDropdown('arabic-lessons-dropdown')" style="cursor: pointer; padding: 10px;">
+                    📚 اللغة العربية <span style="font-size: 16px;">  </span>
+                </div>
+                <ul id="arabic-lessons-dropdown" class="dropdown-menu" style="display: none;">
+                    <li><a href="#arabic-lesson1" onclick="showContent('arabic-lesson1')">درس 1: قواعد النحو</a></li>
+                    <li><a href="#arabic-lesson2" onclick="showContent('arabic-lesson2')">درس 2: الأسلوب الحكائي</a></li>
+                </ul>
+            </li>
+            <li>
+                <div onclick="toggleDropdown('english-lessons-dropdown')" style="cursor: pointer; padding: 10px;">
+                    📚 اللغة الإنجليزية <span style="font-size: 16px;">  </span>
+                </div>
+                <ul id="english-lessons-dropdown" class="dropdown-menu" style="display: none;">
+                    <li><a href="#english-lesson1" onclick="showContent('english-lesson1')">درس 1: Present Simple Tense</a></li>
+                    <li><a href="#english-lesson2" onclick="showContent('english-lesson2')">درس 2: Vocabulary for daily life</a></li>
+                </ul>
+            </li>
+            <li>
+                <div onclick="toggleDropdown('science-lessons-dropdown')" style="cursor: pointer; padding: 10px;">
+                    🔬 العلوم <span style="font-size: 16px;">  </span>
+                </div>
+                <ul id="science-lessons-dropdown" class="dropdown-menu" style="display: none;">
+                    <li><a href="#science-lesson1" onclick="showContent('science-lesson1')">درس 1: قوانين الحركة</a></li>
+                    <li><a href="#science-lesson2" onclick="showContent('science-lesson2')">درس 2: الطاقة والعمل</a></li>
+                </ul>
+            </li>
+            <li>
+                <div onclick="toggleDropdown('social-lessons-dropdown')" style="cursor: pointer; padding: 10px;">
+                    🌍 الدراسات الاجتماعية <span style="font-size: 16px;">  </span>
+                </div>
+                <ul id="social-lessons-dropdown" class="dropdown-menu" style="display: none;">
+                    <li><a href="#social-lesson1" onclick="showContent('social-lesson1')">درس 1: التاريخ الحديث</a></li>
+                    <li><a href="#social-lesson2" onclick="showContent('social-lesson2')">درس 2: جغرافيا العالم</a></li>
+                </ul>
+            </li>
+            <li>
+                <div onclick="toggleDropdown('math-lessons-dropdown')" style="cursor: pointer; padding: 10px;">
+                    📝 الرياضيات <span style="font-size: 16px;"> </span>
+                </div>
+                <ul id="math-lessons-dropdown" class="dropdown-menu" style="display: none;">
+                    <li><a href="#math-lesson1" onclick="showContent('math-lesson1')">درس 1: المعادلات الخطية</a></li>
+                    <li><a href="#math-lesson2" onclick="showContent('math-lesson2')">درس 2: المثلثات</a></li>
+                </ul>
+            </li>
+        </ul>
+
+
+        <!-- قائمة الاختبارات التفاعلية -->
+        <div onclick="toggleDropdown('exams-dropdown')" style="cursor: pointer; padding: 15px;">
+            📝 اختبارات تفاعلية <span style="font-size: 16px;"> ▼ </span>
+        </div>
+        <ul id="exams-dropdown" class="dropdown-menu">
+            <li><a href="#arabic-exam" onclick="showContent('arabic-exam')"> 📚   اللغة العربية</a></li>
+            <li><a href="#english-exam" onclick="showContent('english-exam')"> 📚   اللغة الإنجليزية</a></li>
+            <li><a href="#science-exam" onclick="showContent('science-exam')"> 🔬   العلوم</a></li>
+            <li><a href="#social-exam" onclick="showContent('social-exam')"> 🌍   الدراسات الاجتماعية</a></li>
+            <li><a href="#math-exam" onclick="showContent('math-exam')"> 📝   الرياضيات</a></li>
+        </ul>
+
+        <!-- روابط أخرى -->
+        <a href="#tips" onclick="showContent('tips')"> 🎯 نصائح دراسية</a>
+        <a href="#schedule" onclick="showContent('schedule')"> 📅 تنظيم الوقت</a>
+        <a href="#page_in" onclick="showContent('page_in')">رجوع إلى الصفحة الرئيسية</a>
+        <a href="page_in.html" class="cta-button">خروج</a>
+
+    </div>
+
+    <!-- محتوى الصفحة -->
+
+
+  <!-- دروس اللغة العربية -->
+  <div id="arabic-lesson1" class="content">
+    <h2>📚 درس 1: قواعد النحو</h2>
+    <p>ملخص درس قواعد النحو:</p>
+    <ul>
+        <li>تعريف النحو.</li>
+        <li>أنواع الكلمات.</li>
+    </ul>
+</div>
+<div id="arabic-lesson2" class="content">
+    <h2>📚 درس 2: الأسلوب الحكائي</h2>
+    <p>ملخص درس الأسلوب الحكائي:</p>
+    <ul>
+        <li>ما هو الأسلوب الحكائي؟</li>
+        <li>عناصر القصة.</li>
+    </ul>
+</div>
+
+<!-- دروس اللغة الإنجليزية -->
+<div id="english-lesson1" class="content">
+    <h2>📚 درس 1: Present Simple Tense</h2>
+    <p>ملخص درس Present Simple Tense:</p>
+    <ul>
+        <li>تعريف الزمن البسيط الحاضر.</li>
+        <li>قواعد الاستخدام.</li>
+    </ul>
+</div>
+<div id="english-lesson2" class="content">
+    <h2>📚 درس 2: Vocabulary for daily life</h2>
+    <p>ملخص درس Vocabulary for daily life:</p>
+    <ul>
+        <li>كلمات يومية شائعة.</li>
+        <li>كيفية استخدامها في الجمل.</li>
+    </ul>
+</div>
+
+<!-- دروس العلوم -->
+<div id="science-lesson1" class="content">
+    <h2>🔬 درس 1: قوانين الحركة</h2>
+    <p>ملخص درس قوانين الحركة:</p>
+    <ul>
+        <li>قانون نيوتن الأول.</li>
+        <li>قانون نيوتن الثاني.</li>
+    </ul>
+</div>
+<div id="science-lesson2" class="content">
+    <h2>🔬 درس 2: الطاقة والعمل</h2>
+    <p>ملخص درس الطاقة والعمل:</p>
+    <ul>
+        <li>تعريف الطاقة.</li>
+        <li>أنواع الطاقة.</li>
+    </ul>
+</div>
+
+<!-- دروس الدراسات الاجتماعية -->
+<div id="social-lesson1" class="content">
+    <h2>🌍 درس 1: التاريخ الحديث</h2>
+    <p>ملخص درس التاريخ الحديث:</p>
+    <ul>
+        <li>الأحداث الرئيسية.</li>
+        <li>التغيرات السياسية.</li>
+    </ul>
+</div>
+<div id="social-lesson2" class="content">
+    <h2>🌍 درس 2: جغرافيا العالم</h2>
+    <p>ملخص درس جغرافيا العالم:</p>
+    <ul>
+        <li>القارات والمحيطات.</li>
+        <li>الدول الكبرى.</li>
+    </ul>
+</div>
+
+<!-- دروس الرياضيات -->
+<div id="math-lesson1" class="content">
+    <h2>📝 درس 1: المعادلات الخطية</h2>
+    <p>ملخص درس المعادلات الخطية:</p>
+    <ul>
+        <li>تعريف المعادلة الخطية.</li>
+        <li>حل المعادلات.</li>
+    </ul>
+</div>
+<div id="math-lesson2" class="content">
+    <h2>📝 درس 2: المثلثات</h2>
+    <p>ملخص درس المثلثات:</p>
+    <ul>
+        <li>أنواع المثلثات.</li>
+        <li>خواص المثلثات.</li>
+    </ul>
+</div>
+
+
+
+    <!-- الصفحة الرئيسية -->
+    <div id="page_in" class="content active">
+        
+        <h1>يرجى اختيار المادة الدراسية من القائمة الجانبية > (☰)</h1>
+        <br>
+        <img id="Page_home" src="Media/1.jpeg" alt="صورة الصفحة الرئيسية">
+    </div>
+
+    <!-- ملخصات اللغة العربية -->
+    <div id="arabic-lessons" class="content">
+        <h2> 📚 اللغة العربية</h2>
+        <p>القراءة : </p>
+        <ul>
+            <li>قواعد النحو.</li>
+            <li>الأسلوب الحكائي.</li>
+            <p> النصوص:</p>
+        <ul>
+            <li>قواعد النحو.</li>
+            <li>الأسلوب الحكائي.</li>
+            <p>   نحو :</p>
+        <ul>
+            <li>قواعد النحو.</li>
+            <li>الأسلوب الحكائي.</li>
+            <p>   العربية:</p>
+        <ul>
+          <li>قواعد النحو.</li>
+          <li>الأسلوب الحكائي.</li>
+        </ul>
+    </div>
+
+    <!-- ملخصات اللغة الإنجليزية -->
+    <div id="english-lessons" class="content">
+        <h2> 📚 اللغة الإنجليزية</h2>
+        <p>ملخصات دروس اللغة الإنجليزية:</p>
+        <ul>
+            <li>Present Simple Tense.</li>
+            <li>Vocabulary for daily life.</li>
+        </ul>
+    </div>
+
+    <!-- ملخصات العلوم -->
+    <div id="science-lessons" class="content">
+        <h2> 🔬 العلوم</h2>
+        <p>ملخصات دروس العلوم:</p>
+        <ul>
+            <li>قوانين الحركة.</li>
+            <li>الطاقة والعمل.</li>
+        </ul>
+    </div>
+
+    <!-- ملخصات الدراسات الاجتماعية -->
+    <div id="social-lessons" class="content">
+        <h2> 🌍 الدراسات الاجتماعية</h2>
+        <p>ملخصات دروس الدراسات الاجتماعية:</p>
+        <ul>
+            <li>التاريخ الحديث.</li>
+            <li>جغرافيا العالم.</li>
+        </ul>
+    </div>
+
+    <!-- ملخصات الرياضيات -->
+    <div id="math-lessons" class="content">
+        <h2> 📝 الرياضيات</h2>
+        <p>ملخصات دروس الرياضيات:</p>
+        <ul>
+            <li>المعادلات الخطية.</li>
+            <li>المثلثات.</li>
+        </ul>
+    </div>
+
+    <!-- اختبار الرياضيات -->
+    <div id="math-exam" class="content">
+        <h2> 📝 اختبار في الرياضيات</h2>
+        <form>
+            <label>ما هو العدد الأولي؟</label><br>
+            <input type="radio" name="q1" value="correct"> 7<br>
+            <input type="radio" name="q1" value="wrong"> 8<br>
+            <button type="button" onclick="alert('إجابة صحيحة!')">تحقق من الإجابة</button>
+        </form>
+    </div>
+
+    <!-- اختبار العلوم -->
+    <div id="science-exam" class="content">
+        <h2> 🔬 اختبار في العلوم</h2>
+        <form>
+            <label>ما هو القانون الذي ينص على أن كل فعل له رد فعل مساوي ومعاكس؟</label><br>
+            <input type="radio" name="q2" value="correct"> قانون نيوتن الثالث<br>
+            <input type="radio" name="q2" value="wrong"> قانون نيوتن الثاني<br>
+            <button type="button" onclick="alert('إجابة صحيحة!')">تحقق من الإجابة</button>
+        </form>
+    </div>
+
+    <!-- اختبار اللغة العربية -->
+    <div id="arabic-exam" class="content">
+        <h2> 📚 اختبار في اللغة العربية</h2>
+        <form>
+            <label>ما هو الفعل الماضي؟</label><br>
+            <input type="radio" name="q3" value="correct"> كتب<br>
+            <input type="radio" name="q3" value="wrong"> يكتب<br>
+            <button type="button" onclick="alert('إجابة صحيحة!')">تحقق من الإجابة</button>
+        </form>
+    </div>
+
+    <!-- نصائح دراسية -->
+    <div id="tips" class="content">
+        <h2> 🎯 نصائح دراسية</h2>
+        <p id="par">هذه بعض النصائح التي يمكن أن تساعدك في تحسين أدائك الدراسي :</p>
+        <ol id="apar">
+            <li>خصص وقتًا ثابتًا للدراسة يوميًا.</li>
+            <br>
+            <li>استخدم تقنية التكرار لحفظ المعلومات.</li>
+            <br>
+            <li>اختر مكانًا هادئًا للدراسة.</li>
+            <br>
+            <li>  حل تقيمات الوزارةعلى <a href="https://moe.gov.eg/elearningenterypage/e-learning/"> الموقع الرسمى </a> </li>
+            <br>
+            <li> ذاكر كل يوم حتى لو ربع ساعة يوميا</li>
+            <br>
+            <li>فقليل دائم افضل من كثير متقطع</li>
+        </ol>
+    </div>
+
+    <!-- تنظيم الوقت -->
+    <div id="schedule" class="content">
+        <h2> 📅 تنظيم الوقت</h2>
+        <p>جدول زمني مقترح للدراسة:</p>
+        <table border="1" style="margin: 0 auto;">
+            <tr>
+                <th>الوقت</th>
+                <th>النشاط</th>
+            </tr>
+            <tr>
+                <td>8:00 - 9:00</td>
+                <td>اللغة العربية</td>
+            </tr>
+            <tr>
+                <td>9:00 - 10:00</td>
+                <td>استراحة</td>
+            </tr>
+            <tr>
+                <td>10:00 - 11:00</td>
+                <td>علوم</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+
+
+window.onload = function() {
+            var audio = document.getElementById("welcomeSound");
+            audio.play(); };
+
+        // دالة لإظهار المحتوى المطلوب
+        function showContent(id) {
+            document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            toggleMenu();
+        }
+
+        // دالة لإغلاق القائمة الجانبية
+        function toggleMenu() {
+            var sidebar = document.getElementById("sidebar");
+            if (sidebar.style.left === "0px") {
+                sidebar.style.left = "-250px";
+            } else {
+                sidebar.style.left = "0px";
+            }
+        }
+
+        // دالة لإظهار/إخفاء القائمة المنسدلة
+        function toggleDropdown(menuId) {
+            var dropdown = document.getElementById(menuId);
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
